@@ -31,6 +31,7 @@ export async function updateProfile(
 }
 
 export async function getProfile(userId: UserId) {
+  // No projection: returns the whole gf_profile row, including notificationsMuted.
   const profile = await database.query.profiles.findFirst({
     where: eq(profiles.userId, userId),
   });

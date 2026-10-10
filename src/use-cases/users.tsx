@@ -184,6 +184,13 @@ export async function updateProfileLocationUseCase(
   await updateProfile(userId, { location });
 }
 
+export async function updateProfileNotificationsMutedUseCase(
+  userId: UserId,
+  notificationsMuted: boolean
+) {
+  await updateProfile(userId, { notificationsMuted });
+}
+
 export async function createGithubUserUseCase(githubUser: GitHubUser) {
   let existingUser = await getUserByEmail(githubUser.email);
 

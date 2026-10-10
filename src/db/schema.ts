@@ -96,6 +96,7 @@ export const profiles = pgTable("gf_profile", {
   image: text("image"),
   bio: text("bio").notNull().default(""),
   location: text("location"),
+  notificationsMuted: boolean("notificationsMuted").notNull().default(false),
 });
 
 export const sessions = pgTable(

@@ -1,0 +1,1 @@
+ALTER TABLE "gf_profile" ADD COLUMN "notificationsMuted" boolean DEFAULT false NOT NULL;
