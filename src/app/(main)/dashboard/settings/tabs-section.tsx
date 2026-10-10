@@ -22,6 +22,12 @@ export function SettingsTab({ hasSubscription }: { hasSubscription: boolean }) {
               <Link href={`/dashboard/settings/security`}>Security</Link>
             </TabsTrigger>
 
+            <TabsTrigger asChild value="notifications">
+              <Link href={`/dashboard/settings/notifications`}>
+                Notifications
+              </Link>
+            </TabsTrigger>
+
             {hasSubscription && (
               <TabsTrigger asChild value="subscription">
                 <Link href={`/dashboard/settings/subscription`}>
