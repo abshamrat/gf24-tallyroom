@@ -18,7 +18,7 @@ import { updateProfileLocationAction } from "./actions";
 import { useServerAction } from "zsa-react";
 
 const updateProfileLocationSchema = z.object({
-  location: z.string(),
+  location: z.string().max(60),
 });
 
 export function ProfileLocationForm({ location }: { location: string }) {
@@ -70,7 +70,7 @@ export function ProfileLocationForm({ location }: { location: string }) {
             <FormItem className="flex-1">
               <FormLabel>Location</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input {...field} maxLength={60} />
               </FormControl>
               <FormMessage />
             </FormItem>

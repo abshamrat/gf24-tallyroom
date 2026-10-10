@@ -46,7 +46,7 @@ export const updateProfileLocationAction = authenticatedAction
   .createServerAction()
   .input(
     z.object({
-      location: z.string(),
+      location: z.string().max(60),
     })
   )
   .handler(async ({ input, ctx }) => {
