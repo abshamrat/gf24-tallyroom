@@ -20,7 +20,7 @@ export function GroupCard({
   buttonText,
   memberCount,
 }: {
-  group: Pick<Group, "id" | "bannerId" | "name" | "description" | "id">;
+  group: Pick<Group, "id" | "bannerId" | "name" | "description" | "tagline">;
   buttonText: string;
   memberCount: string;
 }) {
@@ -38,6 +38,11 @@ export function GroupCard({
         </div>
         <div className="px-6 pt-4">
           <CardTitle className="mb-2 text-xl">{group.name}</CardTitle>
+          {group.tagline ? (
+            <p className="mb-2 text-sm text-neutral-500 dark:text-neutral-400">
+              {group.tagline}
+            </p>
+          ) : null}
           <CardDescription className="line-clamp-3 h-[4.5rem] text-neutral-500 dark:text-neutral-400">
             {group.description}
           </CardDescription>
