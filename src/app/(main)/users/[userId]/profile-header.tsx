@@ -36,7 +36,12 @@ export async function ProfileHeader({ userId }: { userId: UserId }) {
               className="rounded-full object-cover h-[60px] w-[60px] border-2 border-brand-primary/20 shadow-sm"
             />
 
-            <h1 className={pageTitleStyles}>{profile.displayName} </h1>
+            <div>
+              <h1 className={pageTitleStyles}>{profile.displayName} </h1>
+              {profile.location ? (
+                <p className="text-sm text-muted-foreground">{profile.location}</p>
+              ) : null}
+            </div>
           </div>
 
           {shouldShowFollowButtons &&
