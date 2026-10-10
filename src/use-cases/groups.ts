@@ -196,6 +196,20 @@ export async function updateGroupDescriptionUseCase(
   await updateGroup(groupId, { description });
 }
 
+export async function updateGroupTaglineUseCase(
+  authenticatedUser: UserSession,
+  {
+    groupId,
+    tagline,
+  }: {
+    groupId: GroupId;
+    tagline: string;
+  }
+) {
+  await assertGroupOwner(authenticatedUser, groupId);
+  await updateGroup(groupId, { tagline });
+}
+
 export async function deleteGroupUseCase(
   authenticatedUser: UserSession,
   { groupId }: { groupId: GroupId }

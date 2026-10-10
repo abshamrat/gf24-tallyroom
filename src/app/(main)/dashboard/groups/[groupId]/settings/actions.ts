@@ -10,6 +10,7 @@ import {
   updateGroupDescriptionUseCase,
   updateGroupNameUseCase,
   updateGroupSocialLinksUseCase,
+  updateGroupTaglineUseCase,
 } from "@/use-cases/groups";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
@@ -28,6 +29,23 @@ export const updateGroupDescriptionAction = authenticatedAction
     await updateGroupDescriptionUseCase(ctx.user, {
       groupId,
       description: input.description,
+    });
+    revalidatePath(`/dashboard/groups/${groupId}/settings`);
+  });
+
+export const updateGroupTaglineAction = authenticatedAction
+  .createServerAction()
+  .input(
+    z.object({
+      groupId: z.number(),
+      tagline: z.string().max(80),
+    })
+  )
+  .handler(async ({ input, ctx }) => {
+    const groupId = input.groupId;
+    await updateGroupTaglineUseCase(ctx.user, {
+      groupId,
+      tagline: input.tagline,
     });
     revalidatePath(`/dashboard/groups/${groupId}/settings`);
   });
