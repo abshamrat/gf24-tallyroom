@@ -8,6 +8,7 @@ import Image from "next/image";
 import { GroupNameForm } from "./group-name-form";
 import { ConfigurationPanel } from "@/components/configuration-panel";
 import { GroupDescriptionForm } from "./group-description-form";
+import { TaglineForm } from "./tagline-form";
 import { SocialLinksForm } from "./social-links-form";
 
 export default async function Settings({
@@ -69,6 +70,10 @@ export default async function Settings({
             groupId={group.id}
             description={group?.description ?? ""}
           />
+        </ConfigurationPanel>
+
+        <ConfigurationPanel title={"Tagline"}>
+          <TaglineForm groupId={group.id} tagline={group?.tagline ?? ""} />
         </ConfigurationPanel>
 
         <ConfigurationPanel title={"Social Links"}>

@@ -1,0 +1,1 @@
+ALTER TABLE "gf_group" ADD COLUMN "tagline" text;
