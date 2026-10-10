@@ -1,0 +1,117 @@
+import { createEnv } from "@t3-oss/env-nextjs";
+import { z } from "zod";
+import { senderLine } from "@/brand";
+
+// Capability mode decides whether email, storage, payments, jobs and the OAuth
+// half of auth reach real providers ("live") or the local mocks in
+// src/capabilities ("mock"). It defaults to mock everywhere except a
+// production build, so a fresh clone, a test run and a preview boot with
+// nothing but DATABASE_URL; the starter used to refuse to render a single page
+// until 28 provider variables were set (RapidBuild GF-03, 2026-10-08).
+//
+// NEXT_PUBLIC_ so the browser bundle and the server agree on the mode: it is
+// inlined at build time, and a production image built with it set to "mock" is
+// a demo that cannot send mail or take money, which is what a preview is.
+export const capabilityMode: "mock" | "live" =
+  (process.env.NEXT_PUBLIC_CAPABILITY_MODE ??
+    (process.env.NODE_ENV === "production" ? "live" : "mock")) === "live"
+    ? "live"
+    : "mock";
+
+const isMock = capabilityMode === "mock";
+
+// A provider key: required in live mode; in mock mode a stand-in value that
+// no mock ever sends anywhere.
+const provider = (standIn: string) =>
+  isMock ? z.string().min(1).default(standIn) : z.string().min(1);
+
+export const env = createEnv({
+  server: {
+    DATABASE_URL: z.string().min(1),
+    NODE_ENV: z.string().optional(),
+    HOST_NAME: isMock
+      ? z.string().min(1).default("http://localhost:3000")
+      : z.string().min(1),
+    GOOGLE_CLIENT_ID: provider("mock-google-client-id"),
+    GOOGLE_CLIENT_SECRET: provider("mock-google-client-secret"),
+    GITHUB_CLIENT_ID: provider("mock-github-client-id"),
+    GITHUB_CLIENT_SECRET: provider("mock-github-client-secret"),
+    STRIPE_API_KEY: provider("sk_test_mock"),
+    STRIPE_WEBHOOK_SECRET: provider("whsec_mock"),
+    // The sender's address only, set at deployment; the display name in front
+    // of it is brand/brand.json's product_name (senderLine in src/brand).
+    EMAIL_FROM: provider("hello@example.test").transform((from) => senderLine(from)),
+    EMAIL_SERVER_HOST: provider("localhost"),
+    EMAIL_SERVER_PORT: provider("1025"),
+    EMAIL_SERVER_USER: provider("mock"),
+    EMAIL_SERVER_PASSWORD: provider("re_mock"),
+    RESEND_AUDIENCE_ID: provider("mock-audience"),
+    CLOUDFLARE_ACCOUNT_ID: provider("mock-account"),
+    CLOUDFLARE_ACCESS_KEY_ID: provider("mock-access-key"),
+    CLOUDFLARE_SECRET_ACCESS_KEY: provider("mock-secret-key"),
+    CLOUDFLARE_BUCKET_NAME: provider("mock-bucket"),
+    // One switch per capability that has a mock, the names the RapidBuild
+    // preset declares. Unset, each follows the capability mode: the mock in
+    // mock mode, the provider in live mode (src/capabilities).
+    //   EMAIL_TRANSPORT  resend | smtp | log   smtp reaches the mail-catcher
+    //   STORAGE_ADAPTER  r2 | local
+    //   PAYMENTS_ADAPTER stripe | fake
+    EMAIL_TRANSPORT: z.enum(["resend", "smtp", "log"]).optional(),
+    STORAGE_ADAPTER: z.enum(["r2", "local"]).optional(),
+    PAYMENTS_ADAPTER: z.enum(["stripe", "fake"]).optional(),
+    // The address the privacy page gives for questions. Optional: unset, it is
+    // the sender's address. Deployment's, like EMAIL_FROM; the starter wrote
+    // its author's own address into the page.
+    CONTACT_EMAIL: z.string().email().optional(),
+    // Where STORAGE_ADAPTER=local keeps its files.
+    MOCK_STORAGE_DIR: z.string().min(1).default(".data/storage"),
+  },
+  client: {
+    NEXT_PUBLIC_CAPABILITY_MODE: z.enum(["mock", "live"]).optional(),
+    NEXT_PUBLIC_STRIPE_KEY: provider("pk_test_mock"),
+    NEXT_PUBLIC_POSTHOG_KEY: provider("mock-posthog-key"),
+    NEXT_PUBLIC_POSTHOG_HOST: provider("http://localhost:3000"),
+    NEXT_PUBLIC_PRICE_ID_BASIC: provider("price_mock_basic"),
+    NEXT_PUBLIC_PRICE_ID_PREMIUM: provider("price_mock_premium"),
+    NEXT_PUBLIC_STRIPE_MANAGE_URL: provider("/dashboard/settings/subscription"),
+  },
+  runtimeEnv: {
+    NODE_ENV: process.env.NODE_ENV,
+    DATABASE_URL: process.env.DATABASE_URL,
+    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+    STRIPE_API_KEY: process.env.STRIPE_API_KEY,
+    STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
+    NEXT_PUBLIC_PRICE_ID_BASIC: process.env.NEXT_PUBLIC_PRICE_ID_BASIC,
+    NEXT_PUBLIC_PRICE_ID_PREMIUM: process.env.NEXT_PUBLIC_PRICE_ID_PREMIUM,
+    NEXT_PUBLIC_STRIPE_KEY: process.env.NEXT_PUBLIC_STRIPE_KEY,
+    HOST_NAME: process.env.HOST_NAME,
+    EMAIL_SERVER_PASSWORD: process.env.EMAIL_SERVER_PASSWORD,
+    EMAIL_FROM: process.env.EMAIL_FROM,
+    EMAIL_SERVER_HOST: process.env.EMAIL_SERVER_HOST,
+    EMAIL_SERVER_PORT: process.env.EMAIL_SERVER_PORT,
+    EMAIL_SERVER_USER: process.env.EMAIL_SERVER_USER,
+    GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
+    GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
+    CLOUDFLARE_ACCOUNT_ID: process.env.CLOUDFLARE_ACCOUNT_ID,
+    CLOUDFLARE_ACCESS_KEY_ID: process.env.CLOUDFLARE_ACCESS_KEY_ID,
+    CLOUDFLARE_SECRET_ACCESS_KEY: process.env.CLOUDFLARE_SECRET_ACCESS_KEY,
+    CLOUDFLARE_BUCKET_NAME: process.env.CLOUDFLARE_BUCKET_NAME,
+    RESEND_AUDIENCE_ID: process.env.RESEND_AUDIENCE_ID,
+    EMAIL_TRANSPORT: process.env.EMAIL_TRANSPORT,
+    STORAGE_ADAPTER: process.env.STORAGE_ADAPTER,
+    PAYMENTS_ADAPTER: process.env.PAYMENTS_ADAPTER,
+    MOCK_STORAGE_DIR: process.env.MOCK_STORAGE_DIR,
+    CONTACT_EMAIL: process.env.CONTACT_EMAIL,
+    NEXT_PUBLIC_CAPABILITY_MODE: process.env.NEXT_PUBLIC_CAPABILITY_MODE,
+    NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
+    NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
+    NEXT_PUBLIC_STRIPE_MANAGE_URL: process.env.NEXT_PUBLIC_STRIPE_MANAGE_URL,
+  },
+});
+
+// The address people write to: CONTACT_EMAIL, else the sender's address
+// (EMAIL_FROM after senderLine has put the name in front of it).
+export function contactEmail(): string {
+  return env.CONTACT_EMAIL ?? env.EMAIL_FROM.match(/<([^>]+)>\s*$/)?.[1] ?? env.EMAIL_FROM;
+}

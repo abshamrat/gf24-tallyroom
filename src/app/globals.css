@@ -1,0 +1,294 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --success: 123 100% 90%;
+    --success-foreground: 0 0% 0%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+
+    --radius: 0.5rem;
+
+    /* Theme Colors */
+    --brand-primary: 238 84% 59%;
+    --brand-primary-foreground: 0 0% 100%;
+    --brand-secondary: 262 83% 58%;
+    --brand-secondary-foreground: 0 0% 100%;
+    --brand-accent: 330 81% 60%;
+
+    /* Gradient Colors */
+    --gradient-start: 238 84% 59%;
+    --gradient-mid: 262 83% 58%;
+    --gradient-end: 330 81% 60%;
+
+    /* Feature Gradient Colors */
+    --feature-1-start: 217 91% 60%;
+    --feature-1-end: 188 94% 43%;
+    --feature-2-start: 262 83% 58%;
+    --feature-2-end: 330 81% 60%;
+    --feature-3-start: 142 76% 36%;
+    --feature-3-end: 158 64% 52%;
+    --feature-4-start: 238 84% 59%;
+    --feature-4-end: 262 83% 58%;
+    --feature-5-start: 25 95% 53%;
+    --feature-5-end: 0 84% 60%;
+    --feature-6-start: 45 93% 47%;
+    --feature-6-end: 25 95% 53%;
+    --feature-7-start: 173 80% 40%;
+    --feature-7-end: 217 91% 60%;
+    --feature-8-start: 258 90% 66%;
+    --feature-8-end: 262 83% 58%;
+
+    /* Status Colors */
+    --status-success: 142 76% 36%;
+    --status-success-light: 142 76% 90%;
+    --status-warning: 45 93% 47%;
+    --status-warning-light: 45 93% 90%;
+    --status-error: 0 84% 60%;
+    --status-error-light: 0 84% 90%;
+    --status-info: 217 91% 60%;
+    --status-info-light: 217 91% 90%;
+
+    /* Neutral Colors */
+    --neutral-50: 210 40% 98%;
+    --neutral-100: 210 40% 96%;
+    --neutral-200: 214 32% 91%;
+    --neutral-300: 213 27% 84%;
+    --neutral-400: 215 20% 65%;
+    --neutral-500: 215 16% 47%;
+    --neutral-600: 215 19% 35%;
+    --neutral-700: 215 25% 27%;
+    --neutral-800: 217 33% 18%;
+    --neutral-900: 222 47% 11%;
+    --neutral-950: 222 84% 5%;
+
+    /* Badge Colors */
+    --badge-bg: 238 84% 95%;
+    --badge-text: 238 84% 30%;
+    --badge-bg-dark: 238 84% 15%;
+    --badge-text-dark: 238 84% 70%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 100% 60%;
+    --destructive-foreground: 0 46% 100%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+
+    --success: 112.7 59.6% 69.8%;
+    --success-foreground: 0 0% 0%;
+
+    /* Theme Colors - Dark Mode */
+    --brand-primary: 238 84% 70%;
+    --brand-primary-foreground: 222.2 84% 4.9%;
+    --brand-secondary: 262 83% 70%;
+    --brand-secondary-foreground: 222.2 84% 4.9%;
+    --brand-accent: 330 81% 70%;
+
+    /* Gradient Colors - Dark Mode */
+    --gradient-start: 238 84% 70%;
+    --gradient-mid: 262 83% 70%;
+    --gradient-end: 330 81% 70%;
+
+    /* Feature Gradient Colors - Dark Mode (slightly brighter) */
+    --feature-1-start: 217 91% 70%;
+    --feature-1-end: 188 94% 53%;
+    --feature-2-start: 262 83% 70%;
+    --feature-2-end: 330 81% 70%;
+    --feature-3-start: 142 76% 46%;
+    --feature-3-end: 158 64% 62%;
+    --feature-4-start: 238 84% 70%;
+    --feature-4-end: 262 83% 70%;
+    --feature-5-start: 25 95% 63%;
+    --feature-5-end: 0 84% 70%;
+    --feature-6-start: 45 93% 57%;
+    --feature-6-end: 25 95% 63%;
+    --feature-7-start: 173 80% 50%;
+    --feature-7-end: 217 91% 70%;
+    --feature-8-start: 258 90% 76%;
+    --feature-8-end: 262 83% 70%;
+
+    /* Status Colors - Dark Mode */
+    --status-success: 142 76% 46%;
+    --status-success-light: 142 76% 20%;
+    --status-warning: 45 93% 57%;
+    --status-warning-light: 45 93% 20%;
+    --status-error: 0 84% 70%;
+    --status-error-light: 0 84% 20%;
+    --status-info: 217 91% 70%;
+    --status-info-light: 217 91% 20%;
+
+    /* Badge Colors - Dark Mode */
+    --badge-bg: 238 84% 15%;
+    --badge-text: 238 84% 70%;
+    --badge-bg-dark: 238 84% 25%;
+    --badge-text-dark: 238 84% 80%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-libre_franklin), sans-serif;
+  }
+}
+
+.no-scroll .tiptap {
+  @apply h-full;
+}
+
+.tiptap {
+  > * + * {
+    margin-top: 0.75em;
+  }
+
+  @apply bg-neutral-200 dark:bg-neutral-950 rounded p-8 overflow-scroll h-[400px];
+
+  ul {
+    padding: 0 1rem;
+    @apply list-disc;
+  }
+
+  ol {
+    padding: 0 1rem;
+    @apply list-decimal;
+  }
+    
+  li {
+    padding: 0 1rem;
+  }
+
+
+
+  h1 {
+    @apply text-6xl font-bold;
+  }
+
+  h2 {
+    @apply text-5xl font-bold;
+  }
+
+  h3 {
+    @apply text-4xl font-bold;
+  }
+
+  h4 {
+    @apply text-3xl font-bold;
+  }
+
+  h5 {
+    @apply text-2xl font-bold;
+  }
+
+  h6 {
+    @apply text-xl font-bold;
+  }
+
+
+  code {
+    background-color: rgba(#616161, 0.1);
+    color: #616161;
+  }
+
+  pre {
+    background: #0d0d0d;
+    color: #fff;
+    font-family: "JetBrainsMono", monospace;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+
+    code {
+      color: inherit;
+      padding: 0;
+      background: none;
+      font-size: 0.8rem;
+    }
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  blockquote {
+    padding-left: 1rem;
+    border-left: 2px solid rgba(#0d0d0d, 0.1);
+  }
+
+  hr {
+    border: none;
+    border-top: 2px solid rgba(#0d0d0d, 0.1);
+    margin: 2rem 0;
+  }
+}
+
+.tiptap__buttons {
+  @apply flex flex-wrap w-full gap-2 mb-4;
+}
+
+.tiptap__buttons button {
+  @apply px-2 py-1 bg-neutral-200 hover:bg-neutral-200/80 dark:bg-neutral-400 border rounded text-black;
+
+  &.is-active {
+    @apply bg-neutral-100;
+  }
+
+  &:hover {
+    @apply bg-neutral-200;
+  }
+}
