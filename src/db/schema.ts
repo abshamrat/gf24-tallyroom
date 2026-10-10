@@ -182,6 +182,7 @@ export const groups = pgTable(
     discordLink: text("discordLink").default(""),
     githubLink: text("githubLink").default(""),
     xLink: text("xLink").default(""),
+    tagline: text("tagline"),
   },
   (table) => ({
     userIdIsPublicIdx: index("groups_user_id_is_public_idx").on(
