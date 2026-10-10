@@ -95,6 +95,7 @@ export const profiles = pgTable("gf_profile", {
   imageId: text("imageId"),
   image: text("image"),
   bio: text("bio").notNull().default(""),
+  location: text("location"),
 });
 
 export const sessions = pgTable(

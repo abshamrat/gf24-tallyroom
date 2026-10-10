@@ -3,6 +3,7 @@
 import { authenticatedAction } from "@/lib/safe-action";
 import {
   updateProfileBioUseCase,
+  updateProfileLocationUseCase,
   updateProfileNameUseCase,
 } from "@/use-cases/users";
 import { z } from "zod";
@@ -38,6 +39,18 @@ export const updateProfileNameAction = authenticatedAction
   )
   .handler(async ({ input, ctx }) => {
     await updateProfileNameUseCase(ctx.user.id, input.profileName);
+    revalidatePath(`/dashboard/settings/profile`);
+  });
+
+export const updateProfileLocationAction = authenticatedAction
+  .createServerAction()
+  .input(
+    z.object({
+      location: z.string().max(60),
+    })
+  )
+  .handler(async ({ input, ctx }) => {
+    await updateProfileLocationUseCase(ctx.user.id, input.location);
     revalidatePath(`/dashboard/settings/profile`);
   });
 

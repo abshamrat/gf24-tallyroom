@@ -177,6 +177,13 @@ export async function updateProfileNameUseCase(
   await updateProfile(userId, { displayName });
 }
 
+export async function updateProfileLocationUseCase(
+  userId: UserId,
+  location: string
+) {
+  await updateProfile(userId, { location });
+}
+
 export async function createGithubUserUseCase(githubUser: GitHubUser) {
   let existingUser = await getUserByEmail(githubUser.email);
 

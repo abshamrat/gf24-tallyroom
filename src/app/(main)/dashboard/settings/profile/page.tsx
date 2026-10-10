@@ -1,6 +1,7 @@
 import { ProfileImage } from "@/app/(main)/dashboard/settings/profile/profile-image";
 import { ProfileName } from "@/app/(main)/dashboard/settings/profile/profile-name";
 import { EditBioForm } from "./edit-bio-form";
+import { ProfileLocationForm } from "./profile-location-form";
 import { assertAuthenticated } from "@/lib/session";
 import { Suspense, cache } from "react";
 import { getUserProfileUseCase } from "@/use-cases/users";
@@ -24,6 +25,12 @@ export default async function SettingsPage() {
         </Suspense>
       </ConfigurationPanel>
 
+      <ConfigurationPanel title="Location">
+        <Suspense fallback={<Skeleton className="w-full h-[100px] rounded" />}>
+          <LocationFormWrapper />
+        </Suspense>
+      </ConfigurationPanel>
+
       <ConfigurationPanel title="Theme">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between">
           <span className="mb-2 sm:mb-0">Toggle dark mode</span>
@@ -38,4 +45,10 @@ export async function BioFormWrapper() {
   const user = await assertAuthenticated();
   const profile = await getUserProfileLoader(user.id);
   return <EditBioForm bio={profile.bio} />;
+}
+
+export async function LocationFormWrapper() {
+  const user = await assertAuthenticated();
+  const profile = await getUserProfileLoader(user.id);
+  return <ProfileLocationForm location={profile.location ?? ""} />;
 }
