@@ -7,7 +7,12 @@ import { after, test } from "node:test";
 import assert from "node:assert/strict";
 import { pg } from "@/db";
 import { createUser, deleteUser } from "@/data-access/users";
-import { createProfile } from "@/data-access/profiles";
+import { createProfile, updateProfile } from "@/data-access/profiles";
+import { createGroup, getGroupsByUser } from "@/data-access/groups";
+import {
+  createNotification,
+  getNotificationsForUser,
+} from "@/data-access/notifications";
 import * as userUseCases from "@/use-cases/users";
 
 after(async () => {
@@ -48,6 +53,62 @@ test("the notificationsMuted switch choice persists and reads back", async () =>
       false,
       "unmuting must be persisted"
     );
+  } finally {
+    await deleteUser(created.id);
+  }
+});
+
+test("a muted user receives no new notification", async () => {
+  const created = await createUser(`muted-notify-${Date.now()}@example.com`);
+  try {
+    await createProfile(created.id, "Muted Notify");
+    await updateProfile(created.id, { notificationsMuted: true });
+    await createGroup({
+      name: "Mute test group",
+      description: "muted notification group",
+      isPublic: false,
+      userId: created.id,
+    });
+    const [group] = await getGroupsByUser(created.id);
+
+    await createNotification({
+      userId: created.id,
+      groupId: group.id,
+      type: "event",
+      message: "should be skipped",
+      createdOn: new Date(),
+    });
+
+    const notifications = await getNotificationsForUser(created.id);
+    assert.equal(notifications.length, 0);
+  } finally {
+    await deleteUser(created.id);
+  }
+});
+
+test("an unmuted user still receives a new notification", async () => {
+  const created = await createUser(`unmuted-notify-${Date.now()}@example.com`);
+  try {
+    await createProfile(created.id, "Unmuted Notify");
+    await createGroup({
+      name: "Unmute test group",
+      description: "unmuted notification group",
+      isPublic: false,
+      userId: created.id,
+    });
+    const [group] = await getGroupsByUser(created.id);
+
+    await createNotification({
+      userId: created.id,
+      groupId: group.id,
+      type: "event",
+      message: "should be delivered",
+      createdOn: new Date(),
+    });
+
+    const notifications = await getNotificationsForUser(created.id);
+    assert.equal(notifications.length, 1);
+    assert.equal(notifications[0].message, "should be delivered");
   } finally {
     await deleteUser(created.id);
   }

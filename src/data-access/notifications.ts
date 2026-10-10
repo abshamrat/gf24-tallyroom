@@ -1,5 +1,6 @@
 import { database } from "@/db";
 import { GroupId, Notification, notifications } from "@/db/schema";
+import { getProfile } from "@/data-access/profiles";
 import { UserId } from "@/use-cases/types";
 import { and, eq } from "drizzle-orm";
 
@@ -14,6 +15,11 @@ export async function createNotification(notification: {
   message: string;
   createdOn: Date;
 }) {
+  const profile = await getProfile(notification.userId);
+  if (profile?.notificationsMuted) {
+    return undefined;
+  }
+
   const [createdNotification] = await database
     .insert(notifications)
     .values(notification)
