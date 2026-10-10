@@ -1,3 +1,4 @@
+import React from "react";
 import { getGroupImageUrl } from "@/app/(main)/dashboard/groups/[groupId]/settings/util";
 import { Button } from "@/components/ui/button";
 import {
